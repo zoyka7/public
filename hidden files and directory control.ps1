@@ -4,7 +4,7 @@
 # Define the directory to search
 # Change this to the directory you want to search
 # Example: "C:\Users\thyke\Documenti"
-$directory = "C:\Users\tyk\Music" # "C:\Users\thyke\Music" #"C:\Users\thyke\Documents\Nuova cartella"
+$directory = "C:\Users\tyk\Downloads" # "C:\Users\thyke\Music" #"C:\Users\thyke\Documents\Nuova cartella"
 
 # Check if the directory exists
 if (-Not (Test-Path -Path $directory)) {
@@ -28,6 +28,11 @@ try {
 if ($hiddenFiles) {
     Write-Host "Hidden files found:" -ForegroundColor Yellow
     foreach ($file in $hiddenFiles) {
+        # Skip 'desktop.ini' files
+        if ($file.Name -ieq "desktop.ini") {
+            Write-Host "File skipped (desktop.ini): $($file.FullName)" -ForegroundColor Yellow
+            continue
+        }
         Write-Host "File: $($file.FullName)" -ForegroundColor Cyan
         $response = Read-Host "Do you want to delete this file? (Y/N)"
         if ($response -eq "Y" -or $response -eq "y") {
